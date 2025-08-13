@@ -32,7 +32,6 @@ jobs:
 
       - name: Git clone source code
         run: |
-          chown -R $USER scripts/git_clone_source.sh
           ./scripts/git_clone_source.sh
 
       - name: Build gnu dependencies tools
