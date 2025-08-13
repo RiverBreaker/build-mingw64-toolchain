@@ -20,7 +20,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          chmod ＋x scripts/download_dep.sh
+          chmod +x scripts/download_dep.sh
           ./scripts/download_dep.sh
       
       - name: Mkdir build directory
