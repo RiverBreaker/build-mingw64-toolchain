@@ -32,26 +32,12 @@ jobs:
 
       - name: Diagnose & run download_source.sh
         run: |
-          echo "PWD: $(pwd)"
-          echo "---- scripts listing ----"
-          ls -la scripts || true
-
-          echo "---- file info ----"
-          file scripts/download_source.sh || true
-
-          echo "---- show first 8 lines (check shebang & CRLF) ----"
-          sed -n '1,8p' scripts/download_source.sh || true
-
-          echo "---- attempt chmod ----"
-          chmod +x scripts/download_source.sh || true
-          echo "After chmod:"
-          ls -la scripts || true
-
-          echo "---- run via interpreter (avoids exec-bit/noexec problems) ----"
-          bash -x scripts/download_source.sh || true
+          chmod +x scripts/download_source.sh
+          ./scripts/download_source.sh
 
       - name: Build gnu dependencies tools
         run: |
+          chmod +x gnu_scripts/build_gnu_dep_tools.sh
           ./gnu_scripts/build_gnu_dep_tools.sh
       
       - name: Build gnu binutils
@@ -60,35 +46,43 @@ jobs:
 
       - name: Build gnu gcc stage1
         run: |
+          chmod +x gnu_scripts/build_gnu_gcc1.sh
           ./gnu_scripts/build_gnu_gcc1.sh
 
       - name: Build gnu Mingw64 dependencies
         run: |
+          chmod +x gnu_scripts/build_gnu_mingw64.sh
           ./gnu_scripts/build_gnu_mingw64.sh
 
       - name: Build gnu gcc stage2
         run: |
+          chmod +x gnu_scripts/build_gnu_gcc2.sh
           ./gnu_scripts/build_gnu_gcc2.sh
       
       - name: Build mingw dependencies tools
         run: |
+          chmod +x mingw64_scripts/build_mingw_dep_tools.sh
           ./mingw64_scripts/build_mingw_dep_tools.sh
       
       - name: Build mingw binutils
         run: |
+          chmod +x mingw64_scripts/build_mingw_binutils.sh
           ./mingw64_scripts/build_mingw_binutils.sh
 
       - name: Build mingw Mingw64 dependencies
         run: |
+          chmod +x mingw64_scripts/build_mingw_mingw64.sh
           ./mingw64_scripts/build_mingw_mingw64.sh
       
       - name: Build mingw posix
         if: ${{ matrix.thread == 'posix' }}
         run: |
+          chmod +x mingw64_scripts/build_mingw_posix.sh
           ./mingw64_scripts/build_mingw_posix.sh
 
       - name: Build mingw gcc
         run: |
+          chmod +x mingw64_scripts/build_mingw_gcc.sh
           ./mingw64_scripts/build_mingw_gcc.sh
       
       - name: Archive build artifacts

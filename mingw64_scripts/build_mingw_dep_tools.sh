@@ -1,7 +1,8 @@
-export PREFIX="${{ github.workspace }}/build/mingw64"
-export BUILD_TEMP="${{ github.workspace }}/build/build-temp"
-export SRC_DIR="${{ github.workspace }}/build/src"
-export OUTPUT_DIR="${{ github.workspace }}/build/ubuntu-tools/mingw64"
+WORKDIR="${GITHUB_WORKSPACE:-$(pwd)}"
+export PREFIX="$WORKDIR/build/mingw64"
+export BUILD_TEMP="$WORKDIR/build/build-temp"
+export SRC_DIR="$WORKDIR/build/src"
+export OUTPUT_DIR="$WORKDIR/build/ubuntu-tools/mingw64"
 export TARGET=x86_64-w64-mingw32
 export BUILD=x86_64-pc-linux-gnu
 export HOST=x86_64-w64-mingw32
