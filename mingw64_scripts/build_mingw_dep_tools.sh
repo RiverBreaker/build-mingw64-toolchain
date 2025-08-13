@@ -78,7 +78,3 @@ ${src}/gcc/isl/configure \
 echo "Configure ISL completed."
 make -j1 && make install
 echo "Build ISL completed."
-
-for d in build-mingw-gmp build-mingw-mpfr build-mingw-mpc build-mingw-isl; do
-    [ -d "$d" ] && rm -rf "$d"
-done

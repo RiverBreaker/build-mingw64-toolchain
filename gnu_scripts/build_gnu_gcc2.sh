@@ -8,6 +8,9 @@ export HOST=x86_64-pc-linux-gnu
 export PATH=$PATH:$PREFIX/bin
 
 cd $BUILD_TEMP
+for d in build-gnu-headers build-gnu-gendef build-gnu-genidl build-gnu-widl build-gnu-crt; do
+    [ -d "$d" ] && rm -rf "$d" && echo "remove $d"
+done
 if [ -d build-gnu-gcc2 ]; then
     rm -rf build-gnu-gcc2
     echo "remove build-gnu-gcc2"

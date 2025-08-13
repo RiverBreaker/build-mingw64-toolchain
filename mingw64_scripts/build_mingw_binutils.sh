@@ -9,8 +9,11 @@ export HOST=x86_64-w64-mingw32
 export PATH=$PATH:$OUTPUT_DIR/bin
 
 cd $BUILD_TEMP
+for d in build-mingw-gmp build-mingw-mpfr build-mingw-mpc build-mingw-isl; do
+    [ -d "$d" ] && rm -rf "$d" && echo "remove $d"
+done
 for d in build-mingw-binutils build-mingw-m4 build-mingw-libtool; do
-    [ -d "$d" ] && rm -rf "$d"
+    [ -d "$d" ] && rm -rf "$d" && echo "remove $d"
 done
 mkdir -p build-mingw-binutils build-mingw-m4 build-mingw-libtool
 echo "mkdir build-mingw-binutils build-mingw-m4 build-mingw-libtools"

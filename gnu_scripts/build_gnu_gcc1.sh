@@ -8,6 +8,10 @@ export HOST=x86_64-pc-linux-gnu
 export PATH=$PATH:$PREFIX/bin
 
 cd $BUILD_TEMP
+if [ -d build-gnu-binutils ]; then
+    rm -rf build-gnu-binutils
+    echo "remove build-gnu-binutils"
+fi
 if [ -d build-gnu-gcc1 ]; then
     rm -rf build-gnu-gcc1
     echo "remove build-gnu-gcc1"
@@ -56,8 +60,3 @@ ${gcc_src}/configure \
 echo "Configure gcc stage 1 done"
 make -j1 && make install
 echo "Build gcc stage 1 done"
-
-if [ -d build-gnu-gcc1 ]; then
-    rm -rf build-gnu-gcc1
-    echo "remove build-gnu-gcc1"
-fi

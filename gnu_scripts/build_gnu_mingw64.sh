@@ -8,6 +8,10 @@ export HOST=x86_64-pc-linux-gnu
 export PATH=$PATH:$PREFIX/bin
 
 cd $BUILD_TEMP
+if [ -d build-gnu-gcc1 ]; then
+    rm -rf build-gnu-gcc1
+    echo "remove build-gnu-gcc1"
+fi
 for d in build-gnu-headers build-gnu-gendef build-gnu-genidl build-gnu-widl build-gnu-crt; do
     [ -d "$d" ] && rm -rf "$d"
 done
@@ -77,7 +81,3 @@ ${mingw64_src}/mingw-w64-crt/configure \
 echo "Configure crt completed."
 make -j1 && make install
 echo "Build crt completed."
-
-for d in build-gnu-headers build-gnu-gendef build-gnu-genidl build-gnu-widl build-gnu-crt; do
-    [ -d "$d" ] && rm -rf "$d"
-done

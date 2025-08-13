@@ -9,8 +9,14 @@ export HOST=x86_64-w64-mingw32
 export PATH=$PATH:$OUTPUT_DIR/bin
 
 cd $BUILD_TEMP
+for d in \
+    build-mingw-headers build-mingw-gendef build-mingw-genidl \
+    build-mingw-widl build-mingw-crt build-mingw-libmangle \
+    build-mingw-genpeimg; do
+    [ -d "$d" ] && rm -rf "$d" && echo "remove $d"
+done
 for d in build-mingw-winpthreads build-mingw-winstorecompat; do
-    [ -d "$d" ] && rm -rf "$d"
+    [ -d "$d" ] && rm -rf "$d" && echo "remove $d"
 done
 
 mkdir -p $BUILD_TEMP/build-mingw-winpthreads $BUILD_TEMP/build-mingw-winstorecompat

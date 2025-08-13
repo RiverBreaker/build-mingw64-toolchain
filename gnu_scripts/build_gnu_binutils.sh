@@ -8,6 +8,9 @@ export HOST=x86_64-pc-linux-gnu
 export PATH=$PATH:$PREFIX/bin
 
 cd $BUILD_TEMP
+for d in build-gnu-gmp build-gnu-mpfr build-gnu-mpc build-gnu-isl; do
+    [ -d "$d" ] && rm -rf "$d" && echo "remove $d"
+done
 if [ -d build-gnu-binutils ]; then
     rm -rf build-gnu-binutils
     echo "remove build-gnu-binutils"
@@ -35,8 +38,3 @@ ${binutils_src}/configure \
 echo "Configure Binutils completed."
 make -j1 && make install
 echo "Build Binutils completed."
-
-if [ -d build-gnu-binutils ]; then
-    rm -rf build-gnu-binutils
-    echo "remove build-gnu-binutils"
-fi

@@ -9,6 +9,18 @@ export HOST=x86_64-w64-mingw32
 export PATH=$PATH:$OUTPUT_DIR/bin
 
 cd $BUILD_TEMP
+
+for d in \
+    build-mingw-headers build-mingw-gendef build-mingw-genidl \
+    build-mingw-widl build-mingw-crt build-mingw-libmangle \
+    build-mingw-genpeimg; do
+    [ -d "$d" ] && rm -rf "$d" && echo "remove $d"
+done
+
+for d in build-mingw-winpthreads build-mingw-winstorecompat; do
+    [ -d "$d" ] && rm -rf "$d" && echo "remove $d"
+done
+
 if [ -d build-mingw-gcc2 ]; then
     rm -rf build-mingw-gcc2
     echo "remove build-mingw-gcc2"
@@ -81,3 +93,8 @@ cp $PREFIX/lib/gcc/$TARGET/lib/* $PREFIX/lib
 
 sudo rm -f $PREFIX
 sudo rm -f /mingw
+
+if [ -d build-mingw-gcc2 ]; then
+    rm -rf build-mingw-gcc2
+    echo "remove build-mingw-gcc2"
+fi

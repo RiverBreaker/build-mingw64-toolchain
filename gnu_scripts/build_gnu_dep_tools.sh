@@ -71,7 +71,3 @@ ${src}/gcc/isl/configure \
 echo "Configure ISL completed."
 make -j1 && make install
 echo "Build ISL completed."
-
-for d in build-gnu-gmp build-gnu-mpfr build-gnu-mpc build-gnu-isl; do
-    [ -d "$d" ] && rm -rf "$d"
-done
