@@ -13,7 +13,6 @@ sudo apt-get install -y \
     libtool \
     automake \
     autoconf \
-    pkg-config \
     zlib1g-dev \
     libz-mingw-w64-dev \
     libgettextpo-dev \

@@ -42,6 +42,7 @@ jobs:
       
       - name: Build gnu binutils
         run: |
+          chmod +x gnu_scripts/build_gnu_binutils.sh
           ./gnu_scripts/build_gnu_binutils.sh
 
       - name: Build gnu gcc stage1
@@ -82,8 +83,8 @@ jobs:
 
       - name: Build mingw gcc
         run: |
-          chmod +x mingw64_scripts/build_mingw_gcc.sh
-          ./mingw64_scripts/build_mingw_gcc.sh
+          chmod +x mingw64_scripts/build_mingw_gcc_final.sh
+          ./mingw64_scripts/build_mingw_gcc_final.sh
       
       - name: Archive build artifacts
         uses: actions/upload-artifact@v4
@@ -103,6 +104,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: mingw-w64-toolchain
+          path: mingw-w64-toolchain
 
       - name: Version toolchain
         shell: cmd
