@@ -83,8 +83,8 @@ jobs:
 
       - name: Build mingw gcc
         run: |
-          chmod +x mingw64_scripts/build_mingw_gcc.sh
-          ./mingw64_scripts/build_mingw_gcc.sh
+          chmod +x mingw64_scripts/build_mingw_gcc_final.sh
+          ./mingw64_scripts/build_mingw_gcc_final.sh
       
       - name: Archive build artifacts
         uses: actions/upload-artifact@v4
