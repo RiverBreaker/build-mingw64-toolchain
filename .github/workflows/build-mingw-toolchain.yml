@@ -42,6 +42,7 @@ jobs:
       
       - name: Build gnu binutils
         run: |
+          chmod +x gnu_scripts/build_gnu_binutils.sh
           ./gnu_scripts/build_gnu_binutils.sh
 
       - name: Build gnu gcc stage1
