@@ -30,7 +30,7 @@ jobs:
           mkdir -p ${{ github.workspace }}/build/mingw64
           mkdir -p ${{ github.workspace }}/build/src
 
-      - name: Diagnose & run download_source.sh
+      - name: Download source code
         run: |
           chmod +x scripts/download_source.sh
           ./scripts/download_source.sh

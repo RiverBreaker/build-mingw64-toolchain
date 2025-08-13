@@ -20,7 +20,8 @@ src=$(realpath --relative-to="${BUILD_TEMP}/build-gnu-gmp" "${SRC_DIR}")
 # Build dependencies
 # #
 # Build GMP
-cd build-gnu-gmp
+cd $BUILD_TEMP/build-gnu-gmp
+echo "Start to Configure GMP"
 ${src}/gcc/gmp/configure \
     --prefix=$PREFIX \
     --build=$BUILD \
@@ -30,10 +31,10 @@ ${src}/gcc/gmp/configure \
 echo "Configure GMP completed."
 make -j1 && make install
 echo "Build GMP completed."
-cd $BUILD_TEMP
 
 # Build MPFR
-cd build-gnu-mpfr
+cd $BUILD_TEMP/build-gnu-mpfr
+echo "Start to Configure MPFR"
 ${src}/gcc/mpfr/configure \
     --prefix=$PREFIX \
     --build=$BUILD \
@@ -43,10 +44,10 @@ ${src}/gcc/mpfr/configure \
 echo "Configure MPFR completed."
 make -j1 && make install
 echo "Build MPFR completed."
-cd $BUILD_TEMP
 
 # Build MPC
-cd build-gnu-mpc
+cd $BUILD_TEMP/build-gnu-mpc
+echo "Start to Configure MPC"
 ${src}/gcc/mpc/configure \
     --prefix=$PREFIX \
     --build=$BUILD \
@@ -57,10 +58,10 @@ ${src}/gcc/mpc/configure \
 echo "Configure MPC completed."
 make -j1 && make install
 echo "Build MPC completed."
-cd $BUILD_TEMP
 
 # Build ISL
-cd build-gnu-isl
+cd $BUILD_TEMP/build-gnu-isl
+echo "Start to Configure ISL"
 ${src}/gcc/isl/configure \
     --prefix=$PREFIX \
     --build=$BUILD \
@@ -70,12 +71,18 @@ ${src}/gcc/isl/configure \
 echo "Configure ISL completed."
 make -j1 && make install
 echo "Build ISL completed."
-cd $BUILD_TEMP
 
-
+# 设定 PREFIX 与 WORKDIR（替换为你的实际路径变量）
+WORKDIR="${GITHUB_WORKSPACE:-$(pwd)}"
 PREFIX="$WORKDIR/build/ubuntu-tools/mingw64"
 
-echo "PKG_CONFIG_PATH: $PKG_CONFIG_PATH"
+echo "PREFIX=$PREFIX"
+echo "PKG_CONFIG_PATH(before)=$PKG_CONFIG_PATH"
+
+# 将你 install 的 pkgconfig 目录临时放到前面（不永久修改）
+export PKG_CONFIG_PATH="$PREFIX/lib/pkgconfig:${PKG_CONFIG_PATH:-}"
+echo "PKG_CONFIG_PATH(after)=$PKG_CONFIG_PATH"
+
 echo "Check pkg-config for isl:"
 pkg-config --modversion isl || echo "pkg-config can't find isl"
 
@@ -89,16 +96,17 @@ ls -la "$PREFIX/lib/pkgconfig" || true
 echo "List installed lib files:"
 ls -la "$PREFIX/lib" | egrep "libisl|isl" || true
 
-echo "Search for symbol in static/shared library (if exists):"
+echo "--- search symbol in libisl ---"
 if [ -f "$PREFIX/lib/libisl.a" ]; then
-  nm -g "$PREFIX/lib/libisl.a" | grep isl_set_copy_basic_set || true
+  nm -g "$PREFIX/lib/libisl.a" | grep isl_set_copy_basic_set || echo "symbol not found in libisl.a"
 fi
 if [ -f "$PREFIX/lib/libisl.so" ]; then
-  nm -D "$PREFIX/lib/libisl.so" | grep isl_set_copy_basic_set || true
+  nm -D "$PREFIX/lib/libisl.so" | grep isl_set_copy_basic_set || echo "symbol not found in libisl.so"
 fi
 
 # Build Cloog
-cd build-gnu-cloog
+cd $BUILD_TEMP/build-gnu-cloog
+echo "Start to Configure Cloog"
 ${src}/cloog/configure \
     --prefix=$PREFIX \
     --build=$BUILD \
