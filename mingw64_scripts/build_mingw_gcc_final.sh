@@ -1,0 +1,83 @@
+export PREFIX="${{ github.workspace }}/build/mingw64"
+export BUILD_TEMP="${{ github.workspace }}/build/build-temp"
+export SRC_DIR="${{ github.workspace }}/build/src"
+export OUTPUT_DIR="${{ github.workspace }}/build/ubuntu-tools/mingw64"
+export TARGET=x86_64-w64-mingw32
+export BUILD=x86_64-pc-linux-gnu
+export HOST=x86_64-w64-mingw32
+export PATH=$PATH:$OUTPUT_DIR/bin
+
+cd $BUILD_TEMP
+if [ -d build-mingw-gcc2 ]; then
+    rm -rf build-mingw-gcc2
+    echo "remove build-mingw-gcc2"
+fi
+mkdir -p build-mingw-gcc2
+echo "mkdir build-mingw-gcc2"
+
+gcc_src=$(realpath --relative-to="${BUILD_TEMP}/build-mingw-gcc2" "${SRC_DIR}/gcc")
+
+cd $BUILD_TEMP/build-mingw-gcc2
+${gcc_src}/configure \
+    --prefix=$PREFIX \
+    --build=$BUILD \
+    --host=$HOST \
+    --target=$TARGET \
+    --with-local-prefix=$PREFIX/local \
+    --disable-nls \
+    --disable-lto \
+    --disable-multilib \
+    --disable-win32-registry \
+    --disable-libstdcxx-pch \
+    --disable-symvers \
+    --enable-shared \
+    --enable-static \
+    --enable-languages=c,c++ \
+    --enable-libstdcxx-debug \
+    --enable-version-specific-runtime-libs \
+    --enable-decimal-float=yes \
+    --enable-threads=posix \
+    --enable-tls \
+    --enable-fully-dynamic-string \
+    --with-gnu-ld \
+    --with-gnu-as \
+    --without-newlib \
+    --with-libiconv \
+    --with-gmp=$PREFIX \
+    --with-mpfr=$PREFIX \
+    --with-mpc=$PREFIX \
+    --with-isl=$PREFIX \
+    --with-cloog=$PREFIX
+echo "Configure gcc stage 2 done"
+make -j1 && make install
+echo "Build gcc stage 2 done"
+
+cd $BUILD_TEMP
+if [ -d build-mingw-libiconv ]; then
+    rm -rf build-mingw-libiconv
+    echo "remove build-mingw-libiconv"
+fi
+mkdir -p build-mingw-libiconv
+echo "mkdir build-mingw-libiconv"
+
+libiconv_src=$(realpath --relative-to="${BUILD_TEMP}/build-mingw-libiconv" "${SRC_DIR}/libiconv")
+
+cd $BUILD_TEMP/build-mingw-libiconv
+${libiconv_src}/configure \
+    --prefix=$PREFIX/$TARGET \
+    --build=$BUILD \
+    --host=$HOST \
+    --enable-extra-encodings \
+    --enable-static \
+    --disable-shared \
+    --disable-nls \
+    --with-gnu-ld
+echo "Configure libiconv done"
+make -j1 && make install
+echo "Build libiconv done"
+
+cp $PREFIX/lib/gcc/$TARGET/*.dll $PREFIX/bin
+cp $PREFIX/lib/gcc/$TARGET/lib/* $PREFIX/lib
+
+sudo rm -f $PREFIX
+sudo rm -f /mingw

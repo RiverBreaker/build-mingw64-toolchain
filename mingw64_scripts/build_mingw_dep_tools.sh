@@ -1,0 +1,94 @@
+export PREFIX="${{ github.workspace }}/build/mingw64"
+export BUILD_TEMP="${{ github.workspace }}/build/build-temp"
+export SRC_DIR="${{ github.workspace }}/build/src"
+export OUTPUT_DIR="${{ github.workspace }}/build/ubuntu-tools/mingw64"
+export TARGET=x86_64-w64-mingw32
+export BUILD=x86_64-pc-linux-gnu
+export HOST=x86_64-w64-mingw32
+export PATH=$PATH:$OUTPUT_DIR/bin
+
+
+sudo ln -s $OUTPUT_DIR $PREFIX
+sudo ln -s $PREFIX /mingw
+
+cd $BUILD_TEMP
+for d in build-mingw-gmp build-mingw-mpfr build-mingw-mpc build-mingw-isl build-mingw-cloog; do
+    [ -d "$d" ] && rm -rf "$d"
+done
+mkdir -p build-mingw-gmp build-mingw-mpfr build-mingw-mpc build-mingw-isl build-mingw-cloog
+echo "mkdir build-mingw-gmp build-mingw-mpfr build-mingw-mpc build-mingw-isl build-mingw-cloog"
+
+
+src=$(realpath --relative-to="${BUILD_TEMP}/build-mingw-gmp" "${SRC_DIR}")
+
+# Build dependencies
+# #
+# Build GMP
+cd $BUILD_TEMP/build-mingw-gmp
+${src}/gcc/gmp/configure \
+    --prefix=$PREFIX \
+    --build=$BUILD \
+    --host=$HOST \
+    --enable-shared \
+    --disable-static \
+    --enable-cxx
+echo "Configure GMP completed."
+make -j1 && make install
+echo "Build GMP completed."
+
+# Build MPFR
+cd $BUILD_TEMP/build-mingw-mpfr
+${src}/gcc/mpfr/configure \
+    --prefix=$PREFIX \
+    --build=$BUILD \
+    --host=$HOST \
+    --enable-shared \
+    --disable-static \
+    --with-gmp=$PREFIX
+echo "Configure MPFR completed."
+make -j1 && make install
+echo "Build MPFR completed."
+cd $BUILD_TEMP
+
+# Build MPC
+cd $BUILD_TEMP/build-mingw-mpc
+${src}/gcc/mpc/configure \
+    --prefix=$PREFIX \
+    --build=$BUILD \
+    --host=$HOST \
+    --enable-shared \
+    --disable-static \
+    --with-mpfr=$PREFIX \
+    --with-gmp=$PREFIX
+echo "Configure MPC completed."
+make -j1 && make install
+echo "Build MPC completed."
+cd $BUILD_TEMP
+
+# Build ISL
+cd $BUILD_TEMP/build-mingw-isl
+${src}/gcc/isl/configure \
+    --prefix=$PREFIX \
+    --build=$BUILD \
+    --host=$HOST \
+    --enable-shared \
+    --disable-static \
+    --with-gmp-prefix=$PREFIX
+echo "Configure ISL completed."
+make -j1 && make install
+echo "Build ISL completed."
+cd $BUILD_TEMP
+
+# Build Cloog
+cd $BUILD_TEMP/build-mingw-cloog
+${src}/cloog/configure \
+    --prefix=$PREFIX \
+    --build=$BUILD \
+    --host=$HOST \
+    --enable-shared \
+    --disable-static \
+    --with-gmp-prefix=$PREFIX \
+    --with-isl-prefix=$PREFIX
+echo "Configure Cloog completed."
+make -j1 && make install
+echo "Build Cloog completed."
