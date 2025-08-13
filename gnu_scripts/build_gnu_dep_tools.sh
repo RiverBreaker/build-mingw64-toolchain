@@ -72,6 +72,31 @@ make -j1 && make install
 echo "Build ISL completed."
 cd $BUILD_TEMP
 
+
+PREFIX="$WORKDIR/build/ubuntu-tools/mingw64"
+
+echo "PKG_CONFIG_PATH: $PKG_CONFIG_PATH"
+echo "Check pkg-config for isl:"
+pkg-config --modversion isl || echo "pkg-config can't find isl"
+
+echo "pkg-config cflags/libs for isl:"
+pkg-config --cflags isl || true
+pkg-config --libs isl || true
+
+echo "List pkgconfig files under PREFIX:"
+ls -la "$PREFIX/lib/pkgconfig" || true
+
+echo "List installed lib files:"
+ls -la "$PREFIX/lib" | egrep "libisl|isl" || true
+
+echo "Search for symbol in static/shared library (if exists):"
+if [ -f "$PREFIX/lib/libisl.a" ]; then
+  nm -g "$PREFIX/lib/libisl.a" | grep isl_set_copy_basic_set || true
+fi
+if [ -f "$PREFIX/lib/libisl.so" ]; then
+  nm -D "$PREFIX/lib/libisl.so" | grep isl_set_copy_basic_set || true
+fi
+
 # Build Cloog
 cd build-gnu-cloog
 ${src}/cloog/configure \
