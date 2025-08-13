@@ -49,14 +49,6 @@ else
 fi
 cd ..
 
-# Download Cloog
-echo "Downloading Cloog repository..."
-if [ ! -d cloog ]; then
-  wget -c http://www.bastoul.net/cloog/pages/download/cloog-0.18.4.tar.gz
-  tar -xzf cloog-0.18.4.tar.gz
-  mv cloog-0.18.4 cloog
-  rm -f cloog-0.18.4.tar.gz
-fi
 
 # Download Libiconv
 echo "Downloading Libiconv source code..."

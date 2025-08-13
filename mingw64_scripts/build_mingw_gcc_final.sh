@@ -47,8 +47,7 @@ ${gcc_src}/configure \
     --with-gmp=$PREFIX \
     --with-mpfr=$PREFIX \
     --with-mpc=$PREFIX \
-    --with-isl=$PREFIX \
-    --with-cloog=$PREFIX
+    --with-isl=$PREFIX
 echo "Configure gcc stage 2 done"
 make -j1 && make install
 echo "Build gcc stage 2 done"

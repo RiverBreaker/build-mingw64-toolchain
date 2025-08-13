@@ -13,11 +13,11 @@ sudo ln -s $OUTPUT_DIR $PREFIX
 sudo ln -s $PREFIX /mingw
 
 cd $BUILD_TEMP
-for d in build-mingw-gmp build-mingw-mpfr build-mingw-mpc build-mingw-isl build-mingw-cloog; do
+for d in build-mingw-gmp build-mingw-mpfr build-mingw-mpc build-mingw-isl; do
     [ -d "$d" ] && rm -rf "$d"
 done
-mkdir -p build-mingw-gmp build-mingw-mpfr build-mingw-mpc build-mingw-isl build-mingw-cloog
-echo "mkdir build-mingw-gmp build-mingw-mpfr build-mingw-mpc build-mingw-isl build-mingw-cloog"
+mkdir -p build-mingw-gmp build-mingw-mpfr build-mingw-mpc build-mingw-isl
+echo "mkdir build-mingw-gmp build-mingw-mpfr build-mingw-mpc build-mingw-isl"
 
 
 src=$(realpath --relative-to="${BUILD_TEMP}/build-mingw-gmp" "${SRC_DIR}")
@@ -78,18 +78,7 @@ ${src}/gcc/isl/configure \
 echo "Configure ISL completed."
 make -j1 && make install
 echo "Build ISL completed."
-cd $BUILD_TEMP
 
-# Build Cloog
-cd $BUILD_TEMP/build-mingw-cloog
-${src}/cloog/configure \
-    --prefix=$PREFIX \
-    --build=$BUILD \
-    --host=$HOST \
-    --enable-shared \
-    --disable-static \
-    --with-gmp-prefix=$PREFIX \
-    --with-isl-prefix=$PREFIX
-echo "Configure Cloog completed."
-make -j1 && make install
-echo "Build Cloog completed."
+for d in build-mingw-gmp build-mingw-mpfr build-mingw-mpc build-mingw-isl; do
+    [ -d "$d" ] && rm -rf "$d"
+done

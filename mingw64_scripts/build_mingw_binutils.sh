@@ -33,7 +33,6 @@ ${binutils_src}/configure \
     --with-mpc=$PREFIX \
     --with-gmp=$PREFIX \
     --with-mpfr=$PREFIX \
-    --with-cloog=$PREFIX \
     --with-isl=$PREFIX
 echo "Configure Binutils completed."
 make -j1 && make install
