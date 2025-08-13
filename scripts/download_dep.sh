@@ -16,7 +16,6 @@ sudo apt-get install -y \
     pkg-config \
     zlib1g-dev \
     libz-mingw-w64-dev \
-    libiconv-dev \
     libgettextpo-dev \
     gettext \
     mingw-w64-tools \

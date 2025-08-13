@@ -20,8 +20,8 @@ jobs:
 
       - name: Install dependencies
         run: |
-          sudo apt-get update
-          sudo apt-get install -y build-essential git
+          chmod +x scripts/download_dep.sh
+          ./scripts/download_dep.sh
       
       - name: Mkdir build directory
         run: |
