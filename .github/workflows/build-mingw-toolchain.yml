@@ -32,7 +32,7 @@ jobs:
 
       - name: Git clone source code
         run: |
-          ./scripts/git_clone_source.sh
+          ${GITHUB_WORKSPACE}/scripts/git_clone_source.sh
 
       - name: Build gnu dependencies tools
         run: |
