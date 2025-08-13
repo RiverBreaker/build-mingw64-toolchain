@@ -30,10 +30,25 @@ jobs:
           mkdir -p ${{ github.workspace }}/build/mingw64
           mkdir -p ${{ github.workspace }}/build/src
 
-      - name: Git clone source code
+      - name: Diagnose & run download_source.sh
         run: |
-          # chmod +x ./scripts/download_source.sh
-          ./scripts/download_source.sh
+          echo "PWD: $(pwd)"
+          echo "---- scripts listing ----"
+          ls -la scripts || true
+
+          echo "---- file info ----"
+          file scripts/download_source.sh || true
+
+          echo "---- show first 8 lines (check shebang & CRLF) ----"
+          sed -n '1,8p' scripts/download_source.sh || true
+
+          echo "---- attempt chmod ----"
+          chmod +x scripts/download_source.sh || true
+          echo "After chmod:"
+          ls -la scripts || true
+
+          echo "---- run via interpreter (avoids exec-bit/noexec problems) ----"
+          bash -x scripts/download_source.sh || true
 
       - name: Build gnu dependencies tools
         run: |
