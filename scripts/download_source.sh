@@ -29,6 +29,10 @@ fi
 cd binutils
 git fetch --tags --prune
 git checkout tags/binutils-2_40 -b binutils-2_40 || git checkout binutils-2_40 || true
+if [ -f gas/doc/.dirstamp ]; then
+    echo "rm gas/doc/.dirstamp"
+    rm gas/doc/.dirstamp
+fi
 cd ..
 
 # Clone the GCC repository

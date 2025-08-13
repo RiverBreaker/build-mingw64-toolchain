@@ -38,6 +38,7 @@ ${binutils_src}/configure \
     --with-mpfr=$PREFIX \
     --with-isl=$PREFIX
 echo "Configure Binutils completed."
+mkdir -p $BUILD_TEMP/build-mingw-binutils/gas/doc
 make -j1 && make install
 echo "Build Binutils completed."
 
