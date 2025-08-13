@@ -30,30 +30,10 @@ jobs:
           mkdir -p ${{ github.workspace }}/build/mingw64
           mkdir -p ${{ github.workspace }}/build/src
 
-      - name: Diagnose repository and run git_clone_source.sh
-        run: |
-          echo "PWD: $(pwd)"
-          echo "GITHUB_WORKSPACE: $GITHUB_WORKSPACE"
-          echo "---- top-level ls ----"
-          ls -la
-          echo "---- recursive tree (2 levels) ----"
-          find . -maxdepth 2 -print
-          echo "---- check for scripts path ----"
-          if [ -f ./scripts/git_clone_source.sh ]; then
-            echo "Found ./scripts/git_clone_source.sh"
-            chmod +x ./scripts/git_clone_source.sh
-            ./scripts/git_clone_source.sh
-          else
-            echo "NOT found at ./scripts/git_clone_source.sh"
-            echo "Search for any file named git_clone_source.sh in repo:"
-            find . -type f -iname "git_clone_source.sh" -print || true
-            echo "If the file is in a different path, update the workflow to point to that path."
-            exit 1
-          fi
-
       - name: Git clone source code
         run: |
-          ${GITHUB_WORKSPACE}/scripts/git_clone_source.sh
+          # chmod +x ./scripts/download_source.sh
+          ./scripts/download_source.sh
 
       - name: Build gnu dependencies tools
         run: |
