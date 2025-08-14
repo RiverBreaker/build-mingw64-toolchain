@@ -86,6 +86,13 @@ jobs:
           chmod +x mingw64_scripts/build_mingw_gcc_final.sh
           ./mingw64_scripts/build_mingw_gcc_final.sh
       
+      - name: rm build-gcc directory
+        run: |
+          if [ -d build-mingw-gcc2 ]; then
+              rm -rf build-mingw-gcc2
+              echo "remove build-mingw-gcc2"
+          fi
+      
       - name: Archive build artifacts
         uses: actions/upload-artifact@v4
         with:
@@ -111,15 +118,16 @@ jobs:
         run: |
           :: 1. 创建目标目录并解压
           mkdir C:\mingw64
-          xcopy /E /I /Y mingw-w64-toolchain\* C:\mingw64\
+          xcopy /E /I /Y mingw-w64-toolchain\* C:\mingw64-tools\mingw64\
 
           :: 2. 把工具链加到 PATH（只对当前 step 生效）
-          set PATH=%PATH%;C:\mingw64\bin
+          set PATH=%PATH%;C:\mingw64-tools\mingw64\bin
+
 
           :: 3. 打印版本
-          C:\mingw64\bin\x86_64-w64-mingw32-gcc --version
-          C:\mingw64\bin\x86_64-w64-mingw32-g++ --version
-          C:\mingw64\bin\x86_64-w64-mingw32-ld --version
+          C:\mingw64-tools\mingw64\bin\x86_64-w64-mingw32-gcc --version
+          C:\mingw64-tools\mingw64\bin\x86_64-w64-mingw32-g++ --version
+          C:\mingw64-tools\mingw64\bin\x86_64-w64-mingw32-ld --version
           
 
 

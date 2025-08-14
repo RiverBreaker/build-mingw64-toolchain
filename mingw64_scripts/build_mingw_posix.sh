@@ -8,6 +8,13 @@ export BUILD=x86_64-pc-linux-gnu
 export HOST=x86_64-w64-mingw32
 export PATH=$PATH:$OUTPUT_DIR/bin
 
+# Set cross-compiler environment variables
+export CC=$OUTPUT_DIR/bin/x86_64-w64-mingw32-gcc
+export CXX=$OUTPUT_DIR/bin/x86_64-w64-mingw32-g++
+export AR=$OUTPUT_DIR/bin/x86_64-w64-mingw32-ar
+export RANLIB=$OUTPUT_DIR/bin/x86_64-w64-mingw32-ranlib
+export STRIP=$OUTPUT_DIR/bin/x86_64-w64-mingw32-strip
+
 cd $BUILD_TEMP
 for d in \
     build-mingw-headers build-mingw-gendef build-mingw-genidl \

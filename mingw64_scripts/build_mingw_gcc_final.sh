@@ -8,6 +8,13 @@ export BUILD=x86_64-pc-linux-gnu
 export HOST=x86_64-w64-mingw32
 export PATH=$PATH:$OUTPUT_DIR/bin
 
+# Set cross-compiler environment variables
+export CC=$OUTPUT_DIR/bin/x86_64-w64-mingw32-gcc
+export CXX=$OUTPUT_DIR/bin/x86_64-w64-mingw32-g++
+export AR=$OUTPUT_DIR/bin/x86_64-w64-mingw32-ar
+export RANLIB=$OUTPUT_DIR/bin/x86_64-w64-mingw32-ranlib
+export STRIP=$OUTPUT_DIR/bin/x86_64-w64-mingw32-strip
+
 cd $BUILD_TEMP
 
 for d in \
@@ -91,10 +98,11 @@ echo "Build libiconv done"
 cp $PREFIX/lib/gcc/$TARGET/*.dll $PREFIX/bin
 cp $PREFIX/lib/gcc/$TARGET/lib/* $PREFIX/lib
 
-sudo rm -f $PREFIX
-sudo rm -f /mingw
+echo "Mingw-w64 toolchain build completed successfully!"
+echo "Toolchain installed in: $PREFIX"
 
-if [ -d build-mingw-gcc2 ]; then
-    rm -rf build-mingw-gcc2
-    echo "remove build-mingw-gcc2"
-fi
+echo "gcc/g++ version:"
+echo "gcc version:"
+$PREFIX/bin/x86_64-w64-mingw32-gcc --version
+echo "g++ version:"
+$PREFIX/bin/x86_64-w64-mingw32-g++ --version
