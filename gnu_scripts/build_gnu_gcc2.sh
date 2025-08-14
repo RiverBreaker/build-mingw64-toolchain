@@ -21,6 +21,7 @@ echo "mkdir build-gnu-gcc2"
 gcc_src=$(realpath --relative-to="${BUILD_TEMP}/build-gnu-gcc2" "${SRC_DIR}/gcc")
 
 cd build-gnu-gcc2
+echo "Configure gnu mingw gcc stage 2 starting..."
 ${gcc_src}/configure \
     --prefix=$PREFIX \
     --build=$BUILD \
@@ -58,12 +59,19 @@ echo "Configure gcc stage 2 done"
 make -j1 && make install
 echo "Build gcc stage 2 done"
 
+# Post-installation verification for GCC stage 2
+if [ -x "$PREFIX/bin/$TARGET-gcc" ] && [ -x "$PREFIX/bin/$TARGET-g++" ]; then
+    echo "GCC stage 2 installation verified successfully."
+else
+    echo "GCC stage 2 installation verification failed." >&2
+fi
+
+sleep 60
 if [ -d build-gnu-gcc2 ]; then
     rm -rf build-gnu-gcc2
     echo "remove build-gnu-gcc2"
 fi
 
-cd $BUILD_TEMP
 if [ -d build-gnu-libiconv ]; then
     rm -rf build-gnu-libiconv
     echo "remove build-gnu-libiconv"
@@ -73,7 +81,8 @@ echo "mkdir build-gnu-libiconv"
 
 libiconv_src=$(realpath --relative-to="${BUILD_TEMP}/build-gnu-libiconv" "${SRC_DIR}/libiconv")
 
-cd build-gnu-libiconv
+cd $BUILD_TEMP/build-gnu-libiconv
+echo "Configure gnu mingw libiconv starting..."
 ${libiconv_src}/configure \
     --prefix=$PREFIX/$TARGET \
     --build=$BUILD \
@@ -87,6 +96,14 @@ echo "Configure libiconv done"
 make -j1 && make install
 echo "Build libiconv done"
 
+# Post-installation verification for libiconv
+if [ -f "$PREFIX/$TARGET/lib/libiconv.a" ]; then
+    echo "libiconv installation verified successfully."
+else
+    echo "libiconv installation verification failed." >&2
+fi
+
+sleep 60
 if [ -d build-gnu-libiconv ]; then
     rm -rf build-gnu-libiconv
     echo "remove build-gnu-libiconv"

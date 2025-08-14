@@ -38,6 +38,7 @@ echo "mkdir build-mingw-gcc2"
 gcc_src=$(realpath --relative-to="${BUILD_TEMP}/build-mingw-gcc2" "${SRC_DIR}/gcc")
 
 cd $BUILD_TEMP/build-mingw-gcc2
+echo "Configure win mingw gcc/g++ starting..."
 ${gcc_src}/configure \
     --prefix=$PREFIX \
     --build=$BUILD \
@@ -82,6 +83,7 @@ echo "mkdir build-mingw-libiconv"
 libiconv_src=$(realpath --relative-to="${BUILD_TEMP}/build-mingw-libiconv" "${SRC_DIR}/libiconv")
 
 cd $BUILD_TEMP/build-mingw-libiconv
+echo "Configure win mingw libiconv starting..."
 ${libiconv_src}/configure \
     --prefix=$PREFIX/$TARGET \
     --build=$BUILD \

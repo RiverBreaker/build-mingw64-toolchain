@@ -30,6 +30,7 @@ m4_src=$(realpath --relative-to="${BUILD_TEMP}/build-mingw-m4" "${SRC_DIR}/m4")
 libtool_src=$(realpath --relative-to="${BUILD_TEMP}/build-mingw-libtool" "${SRC_DIR}/libtool")
 
 cd $BUILD_TEMP/build-mingw-binutils
+echo "Configure win mingw gcc binutils starting..."
 ${binutils_src}/configure \
     --target=$TARGET \
     --build=$BUILD \
@@ -45,11 +46,12 @@ ${binutils_src}/configure \
     --with-mpfr=$PREFIX \
     --with-isl=$PREFIX
 echo "Configure Binutils completed."
-mkdir -p $BUILD_TEMP/build-mingw-binutils/gas/doc
+# mkdir -p $BUILD_TEMP/build-mingw-binutils/gas/doc
 make -j1 && make install
 echo "Build Binutils completed."
 
 cd $BUILD_TEMP/build-mingw-m4
+echo "Configure win mingw m4 starting..."
 ${m4_src}/configure \
     --build=$BUILD \
     --prefix=$PREFIX \
@@ -61,6 +63,7 @@ make -j1 && make install
 echo "Build M4 completed."
 
 cd $BUILD_TEMP/build-mingw-libtool
+echo "Configure win mingw libtool starting..."
 ${libtool_src}/configure \
     --build=$BUILD \
     --prefix=$PREFIX \

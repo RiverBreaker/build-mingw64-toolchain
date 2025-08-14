@@ -21,6 +21,7 @@ echo "mkdir build-gnu-binutils"
 binutils_src=$(realpath --relative-to="${BUILD_TEMP}/build-gnu-binutils" "${SRC_DIR}/binutils")
 
 cd $BUILD_TEMP/build-gnu-binutils
+echo "Configure gnu mingw binutils starting..."
 ${binutils_src}/configure \
     --target=$TARGET \
     --build=$BUILD \
@@ -36,6 +37,13 @@ ${binutils_src}/configure \
     --with-mpfr=$PREFIX \
     --with-isl=$PREFIX
 echo "Configure Binutils completed."
-mkdir -p $BUILD_TEMP/build-gnu-binutils/gas/doc
+# mkdir -p $BUILD_TEMP/build-gnu-binutils/gas/doc
 make -j1 && make install
 echo "Build Binutils completed."
+
+# Post-installation verification
+if [ -x "$PREFIX/bin/$TARGET-ld" ]; then
+    echo "Binutils installation verified successfully."
+else
+    echo "Binutils installation verification failed." >&2
+fi

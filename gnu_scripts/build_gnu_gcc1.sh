@@ -22,6 +22,7 @@ echo "mkdir build-gnu-gcc1"
 gcc_src=$(realpath --relative-to="${BUILD_TEMP}/build-gnu-gcc1" "${SRC_DIR}/gcc")
 
 cd build-gnu-gcc1
+echo "Configure gnu mingw gcc stage 1 starting..."
 ${gcc_src}/configure \
     --prefix=$PREFIX \
     --build=$BUILD \
@@ -60,3 +61,10 @@ ${gcc_src}/configure \
 echo "Configure gcc stage 1 done"
 make -j1 && make install
 echo "Build gcc stage 1 done"
+
+# Post-installation verification
+if [ -x "$PREFIX/bin/$TARGET-gcc" ]; then
+    echo "GCC stage 1 installation verified successfully."
+else
+    echo "GCC stage 1 installation verification failed." >&2
+fi

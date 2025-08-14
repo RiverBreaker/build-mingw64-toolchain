@@ -32,6 +32,7 @@ src=$(realpath --relative-to="${BUILD_TEMP}/build-mingw-gmp" "${SRC_DIR}")
 # #
 # Build GMP
 cd $BUILD_TEMP/build-mingw-gmp
+echo "Configure win mingw gmp starting..."
 ${src}/gcc/gmp/configure \
     --prefix=$PREFIX \
     --build=$BUILD \
@@ -45,6 +46,7 @@ echo "Build GMP completed."
 
 # Build MPFR
 cd $BUILD_TEMP/build-mingw-mpfr
+echo "Configure win mingw mpfr starting..."
 ${src}/gcc/mpfr/configure \
     --prefix=$PREFIX \
     --build=$BUILD \
@@ -59,6 +61,7 @@ cd $BUILD_TEMP
 
 # Build MPC
 cd $BUILD_TEMP/build-mingw-mpc
+echo "Configure win mingw mpc starting..."
 ${src}/gcc/mpc/configure \
     --prefix=$PREFIX \
     --build=$BUILD \
@@ -74,6 +77,7 @@ cd $BUILD_TEMP
 
 # Build ISL
 cd $BUILD_TEMP/build-mingw-isl
+echo "Configure win mingw isl starting..."
 ${src}/gcc/isl/configure \
     --prefix=$PREFIX \
     --build=$BUILD \

@@ -32,6 +32,13 @@ echo "Configure GMP completed."
 make -j1 && make install
 echo "Build GMP completed."
 
+# Verify GMP installation
+if [ -f "$PREFIX/lib/libgmp.a" ]; then
+    echo "GMP installation verified successfully."
+else
+    echo "GMP installation verification failed." >&2
+fi
+
 # Build MPFR
 cd $BUILD_TEMP/build-gnu-mpfr
 echo "Start to Configure MPFR"
@@ -44,6 +51,13 @@ ${src}/gcc/mpfr/configure \
 echo "Configure MPFR completed."
 make -j1 && make install
 echo "Build MPFR completed."
+
+# Verify MPFR installation
+if [ -f "$PREFIX/lib/libmpfr.a" ]; then
+    echo "MPFR installation verified successfully."
+else
+    echo "MPFR installation verification failed." >&2
+fi
 
 # Build MPC
 cd $BUILD_TEMP/build-gnu-mpc
@@ -59,6 +73,13 @@ echo "Configure MPC completed."
 make -j1 && make install
 echo "Build MPC completed."
 
+# Verify MPC installation
+if [ -f "$PREFIX/lib/libmpc.a" ]; then
+    echo "MPC installation verified successfully."
+else
+    echo "MPC installation verification failed." >&2
+fi
+
 # Build ISL
 cd $BUILD_TEMP/build-gnu-isl
 echo "Start to Configure ISL"
@@ -71,3 +92,10 @@ ${src}/gcc/isl/configure \
 echo "Configure ISL completed."
 make -j1 && make install
 echo "Build ISL completed."
+
+# Verify ISL installation
+if [ -f "$PREFIX/lib/libisl.a" ]; then
+    echo "ISL installation verified successfully."
+else
+    echo "ISL installation verification failed." >&2
+fi
