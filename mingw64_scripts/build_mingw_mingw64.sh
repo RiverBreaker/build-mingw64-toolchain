@@ -31,12 +31,10 @@ mkdir -p build-mingw-headers build-mingw-gendef build-mingw-genidl \
 echo "mkdir build-mingw-headers build-mingw-gendef build-mingw-genidl \
     build-mingw-widl build-mingw-crt build-mingw-libmangle build-mingw-genpeimg"
 
-mingw64_src=$(realpath --relative-to="${BUILD_TEMP}/build-mingw-headers" "${SRC_DIR}/mingw-w64")
-
 # Build libmangle
 cd $BUILD_TEMP/build-mingw-libmangle
 echo "Configure win mingw libmangle starting..."
-${mingw64_src}/mingw-w64-libraries/libmangle/configure \
+$SRC_DIR/mingw-w64/mingw-w64-libraries/libmangle/configure \
     --prefix=$PREFIX \
     --build=$BUILD \
     --host=$HOST
@@ -47,7 +45,7 @@ echo "Build libmangle completed."
 # Build gendef
 cd $BUILD_TEMP/build-mingw-gendef
 echo "Configure win mingw gendef starting..."
-${mingw64_src}/mingw-w64-tools/configure \
+$SRC_DIR/mingw-w64/mingw-w64-tools/configure \
     --prefix=$PREFIX \
     --build=$BUILD \
     --host=$HOST \
@@ -59,7 +57,7 @@ echo "Build gendef completed."
 # Build genidl
 cd $BUILD_TEMP/build-mingw-genidl
 echo "Configure win mingw genidl starting..."
-${mingw64_src}/mingw-w64-tools/configure \
+$SRC_DIR/mingw-w64/mingw-w64-tools/configure \
     --prefix=$PREFIX \
     --build=$BUILD \
     --host=$HOST
@@ -70,7 +68,7 @@ echo "Build genidl completed."
 # Build genpeimg
 cd $BUILD_TEMP/build-mingw-genpeimg
 echo "Configure win mingw genpeimg starting..."
-${mingw64_src}/mingw-w64-tools/genpeimg/configure \
+$SRC_DIR/mingw-w64/mingw-w64-tools/genpeimg/configure \
     --prefix=$PREFIX \
     --build=$BUILD \
     --host=$HOST
@@ -81,7 +79,7 @@ echo "Build genpeimg completed."
 # Build widl
 cd $BUILD_TEMP/build-mingw-widl
 echo "Configure win mingw widl starting..."
-ac_cv_func_malloc_0_nonnull=yes ac_cv_func_realloc_0_nonnull=yes ${mingw64_src}/mingw-w64-tools/configure \
+ac_cv_func_malloc_0_nonnull=yes ac_cv_func_realloc_0_nonnull=yes $SRC_DIR/mingw-w64/mingw-w64-tools/configure \
         --prefix=$PREFIX \
         --build=$BUILD \
         --host=$HOST \
@@ -94,13 +92,14 @@ echo "Build widl completed."
 # Build headers
 cd $BUILD_TEMP/build-mingw-headers
 echo "Configure win mingw headers starting..."
-${mingw64_src}/mingw-w64-headers/configure \
+$SRC_DIR/mingw-w64/mingw-w64-headers/configure \
     --prefix=$PREFIX/$TARGET \
     --build=$BUILD \
     --target=$TARGET \
     --host=$HOST \
     --enable-idl \
-    --enable-secure-api 
+    --enable-secure-api \
+    --with-widl=$PREFIX/bin
 echo "Configure headers completed."
 make -j1 && make install
 echo "Build headers completed."
@@ -114,7 +113,7 @@ CC='$TARGET-gcc' \
 CXX='$TARGET-g++' \
 DLLTOOL='$TARGET-dlltool' \
 RANLIB='$TARGET-ranlib' \
-    ${mingw64_src}/mingw-w64-crt/configure \
+    $SRC_DIR/mingw-w64/mingw-w64-crt/configure \
     --prefix=$PREFIX \
     --build=$BUILD \
     --host=$HOST \

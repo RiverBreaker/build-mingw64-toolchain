@@ -45,15 +45,20 @@ jobs:
           chmod +x gnu_scripts/build_gnu_binutils.sh
           ./gnu_scripts/build_gnu_binutils.sh
 
+      - name: Build gnu Mingw64 dependencies
+        run: |
+          chmod +x gnu_scripts/build_gnu_mingw64.sh
+          ./gnu_scripts/build_gnu_mingw64.sh
+
       - name: Build gnu gcc stage1
         run: |
           chmod +x gnu_scripts/build_gnu_gcc1.sh
           ./gnu_scripts/build_gnu_gcc1.sh
 
-      - name: Build gnu Mingw64 dependencies
+      - name: Build gnu crt
         run: |
-          chmod +x gnu_scripts/build_gnu_mingw64.sh
-          ./gnu_scripts/build_gnu_mingw64.sh
+          chmod +x gnu_scripts/build_gnu_crt.sh
+          ./gnu_scripts/build_gnu_crt.sh
 
       - name: Build gnu gcc stage2
         run: |
