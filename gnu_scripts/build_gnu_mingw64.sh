@@ -80,8 +80,7 @@ $SRC_DIR/mingw-w64/mingw-w64-headers/configure \
     --prefix=$PREFIX/$TARGET \
     --build=$BUILD \
     --target=$TARGET \
-    --enable-idl \
-    --with-widl=$PREFIX/bin
+    --enable-idl 
 echo "Configure headers completed."
 make -j1 && make install
 echo "Build headers completed."

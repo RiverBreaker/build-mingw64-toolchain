@@ -97,9 +97,7 @@ $SRC_DIR/mingw-w64/mingw-w64-headers/configure \
     --build=$BUILD \
     --target=$TARGET \
     --host=$HOST \
-    --enable-idl \
-    --enable-secure-api \
-    --with-widl=$PREFIX/bin
+    --enable-idl
 echo "Configure headers completed."
 make -j1 && make install
 echo "Build headers completed."
