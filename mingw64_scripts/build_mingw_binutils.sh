@@ -37,7 +37,8 @@ ${binutils_src}/configure \
     --prefix=$PREFIX \
     --host=$HOST \
     --target=$TARGET \
-    --enable-shared \
+    --disable-shared \
+    --enable-static \
     --disable-nls \
     --enable-ld \
     --disable-lto \
@@ -70,8 +71,8 @@ ${libtool_src}/configure \
     --host=$HOST \
     --with-gnu-ld \
     --enable-ltdl-install \
-    --enable-shared \
-    --disable-static
+    --disable-shared \
+    --enable-static
 echo "Configure Libtool completed."
 make -j1 && make install
 echo "Build Libtool completed."

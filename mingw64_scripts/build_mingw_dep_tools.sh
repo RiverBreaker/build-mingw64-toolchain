@@ -37,8 +37,8 @@ ${src}/gcc/gmp/configure \
     --prefix=$PREFIX \
     --build=$BUILD \
     --host=$HOST \
-    --enable-shared \
-    --disable-static \
+    --disable-shared \
+    --enable-static \
     --enable-cxx
 echo "Configure GMP completed."
 make -j1 && make install
@@ -56,8 +56,8 @@ ${src}/gcc/mpfr/configure \
     --prefix=$PREFIX \
     --build=$BUILD \
     --host=$HOST \
-    --enable-shared \
-    --disable-static \
+    --disable-shared \
+    --enable-static \
     --with-gmp=$PREFIX
 echo "Configure MPFR completed."
 make -j1 && make install
@@ -75,8 +75,8 @@ ${src}/gcc/mpc/configure \
     --prefix=$PREFIX \
     --build=$BUILD \
     --host=$HOST \
-    --enable-shared \
-    --disable-static \
+    --disable-shared \
+    --enable-static \
     --with-mpfr=$PREFIX \
     --with-gmp=$PREFIX
 echo "Configure MPC completed."
@@ -91,16 +91,15 @@ fi
 # Build ISL
 cd $BUILD_TEMP/build-mingw-isl
 echo "Configure win mingw isl starting..."
-LDFLAGS="-Wl,--no-undefined" LIBS="-lgmp" ${src}/gcc/isl/configure \
+${src}/gcc/isl/configure \
     --prefix=$PREFIX \
     --build=$BUILD \
     --host=$HOST \
-    --enable-shared \
-    --disable-static \
-    --with-gmp-prefix=$PREFIX \
-    --enable-portable-binary
+    --disable-shared \
+    --enable-static \
+    --with-gmp-prefix=$PREFIX
 echo "Configure ISL completed."
-make -j1 LDFLAGS="-Wl,--no-undefined" && make install 
+make -j1 && make install 
 echo "Build ISL completed."
 if [ -f "$PREFIX/lib/libisl.a" ]; then
     echo "ISL installation verified successfully."

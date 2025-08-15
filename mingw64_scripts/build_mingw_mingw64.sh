@@ -45,7 +45,7 @@ echo "Build libmangle completed."
 # Build gendef
 cd $BUILD_TEMP/build-mingw-gendef
 echo "Configure win mingw gendef starting..."
-$SRC_DIR/mingw-w64/mingw-w64-tools/configure \
+$SRC_DIR/mingw-w64/mingw-w64-tools/gendef/configure \
     --prefix=$PREFIX \
     --build=$BUILD \
     --host=$HOST \
@@ -57,7 +57,7 @@ echo "Build gendef completed."
 # Build genidl
 cd $BUILD_TEMP/build-mingw-genidl
 echo "Configure win mingw genidl starting..."
-$SRC_DIR/mingw-w64/mingw-w64-tools/configure \
+$SRC_DIR/mingw-w64/mingw-w64-tools/genidl/configure \
     --prefix=$PREFIX \
     --build=$BUILD \
     --host=$HOST
@@ -79,7 +79,7 @@ echo "Build genpeimg completed."
 # Build widl
 cd $BUILD_TEMP/build-mingw-widl
 echo "Configure win mingw widl starting..."
-ac_cv_func_malloc_0_nonnull=yes ac_cv_func_realloc_0_nonnull=yes $SRC_DIR/mingw-w64/mingw-w64-tools/configure \
+ac_cv_func_malloc_0_nonnull=yes ac_cv_func_realloc_0_nonnull=yes $SRC_DIR/mingw-w64/mingw-w64-tools/widl/configure \
         --prefix=$PREFIX \
         --build=$BUILD \
         --host=$HOST \

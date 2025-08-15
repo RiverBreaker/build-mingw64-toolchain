@@ -21,7 +21,7 @@ echo "mkdir build-gnu-headers build-gnu-gendef build-gnu-genidl build-gnu-widl b
 # Build gendef
 cd $BUILD_TEMP/build-gnu-gendef
 echo "Configure gnu mingw gendef starting..."
-$SRC_DIR/mingw-w64/mingw-w64-tools/configure \
+$SRC_DIR/mingw-w64/mingw-w64-tools/gendef/configure \
     --prefix=$PREFIX \
     --build=$BUILD \
     --host=$BUILD
@@ -39,7 +39,7 @@ fi
 # Build genidl
 cd $BUILD_TEMP/build-gnu-genidl
 echo "Configure gnu mingw genidl starting..."
-$SRC_DIR/mingw-w64/mingw-w64-tools/configure \
+$SRC_DIR/mingw-w64/mingw-w64-tools/genidl/configure \
     --prefix=$PREFIX \
     --build=$BUILD \
     --host=$BUILD
@@ -57,7 +57,7 @@ fi
 # Build widl
 cd $BUILD_TEMP/build-gnu-widl
 echo "Configure gnu mingw widl starting..."
-$SRC_DIR/mingw-w64/mingw-w64-tools/configure \
+$SRC_DIR/mingw-w64/mingw-w64-tools/widl/configure \
     --prefix=$PREFIX \
     --build=$BUILD \
     --host=$BUILD \
