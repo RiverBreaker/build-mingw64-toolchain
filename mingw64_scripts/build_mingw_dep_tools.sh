@@ -43,6 +43,11 @@ ${src}/gcc/gmp/configure \
 echo "Configure GMP completed."
 make -j1 && make install
 echo "Build GMP completed."
+if [ -f "$PREFIX/lib/libgmp.a" ]; then
+    echo "GMP installation verified successfully."
+else
+    echo "GMP installation verification failed." >&2
+fi
 
 # Build MPFR
 cd $BUILD_TEMP/build-mingw-mpfr
@@ -57,7 +62,11 @@ ${src}/gcc/mpfr/configure \
 echo "Configure MPFR completed."
 make -j1 && make install
 echo "Build MPFR completed."
-cd $BUILD_TEMP
+if [ -f "$PREFIX/lib/libmpfr.a" ]; then
+    echo "MPFR installation verified successfully."
+else
+    echo "MPFR installation verification failed." >&2
+fi
 
 # Build MPC
 cd $BUILD_TEMP/build-mingw-mpc
@@ -73,18 +82,28 @@ ${src}/gcc/mpc/configure \
 echo "Configure MPC completed."
 make -j1 && make install
 echo "Build MPC completed."
-cd $BUILD_TEMP
+if [ -f "$PREFIX/lib/libmpc.a" ]; then
+    echo "MPC installation verified successfully."
+else
+    echo "MPC installation verification failed." >&2
+fi
 
 # Build ISL
 cd $BUILD_TEMP/build-mingw-isl
 echo "Configure win mingw isl starting..."
-LDFLAGS="-Wl,--no-undefined" ${src}/gcc/isl/configure \
+LDFLAGS="-Wl,--no-undefined" LIBS="-lgmp" ${src}/gcc/isl/configure \
     --prefix=$PREFIX \
     --build=$BUILD \
     --host=$HOST \
     --enable-shared \
     --disable-static \
-    --with-gmp-prefix=$PREFIX
+    --with-gmp-prefix=$PREFIX \
+    --enable-portable-binary
 echo "Configure ISL completed."
-make -j1 && make install
+make -j1 LDFLAGS="-Wl,--no-undefined" && make install 
 echo "Build ISL completed."
+if [ -f "$PREFIX/lib/libisl.a" ]; then
+    echo "ISL installation verified successfully."
+else
+    echo "ISL installation verification failed." >&2
+fi

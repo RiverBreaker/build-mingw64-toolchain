@@ -71,6 +71,11 @@ ${gcc_src}/configure \
 echo "Configure gcc stage 2 done"
 make -j1 && make install
 echo "Build gcc stage 2 done"
+if [ -x "$PREFIX/bin/$TARGET-gcc" ] && [ -x "$PREFIX/bin/$TARGET-g++" ]; then
+    echo "GCC final installation verified successfully."
+else
+    echo "GCC final installation verification failed." >&2
+fi
 
 cd $BUILD_TEMP
 if [ -d build-mingw-libiconv ]; then
@@ -96,6 +101,11 @@ ${libiconv_src}/configure \
 echo "Configure libiconv done"
 make -j1 && make install
 echo "Build libiconv done"
+if [ -f "$PREFIX/$TARGET/lib/libiconv.a" ]; then
+    echo "libiconv installation verified successfully."
+else
+    echo "libiconv installation verification failed." >&2
+fi
 
 cp $PREFIX/lib/gcc/$TARGET/*.dll $PREFIX/bin
 cp $PREFIX/lib/gcc/$TARGET/lib/* $PREFIX/lib
