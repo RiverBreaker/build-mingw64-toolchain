@@ -1,1 +1,5 @@
 # build-mingw64-toolchain
+
+BURNINGSUN
+MOONLIGHT
+FACETHEFATE
