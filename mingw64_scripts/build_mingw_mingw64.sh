@@ -105,12 +105,12 @@ echo "Build headers completed."
 # Build crt
 cd $BUILD_TEMP/build-mingw-crt
 echo "Configure win mingw crt starting..."
-AR='$TARGET-ar' \
-AS='$TARGET-as' \
-CC='$TARGET-gcc' \
-CXX='$TARGET-g++' \
-DLLTOOL='$TARGET-dlltool' \
-RANLIB='$TARGET-ranlib' \
+AR='$AR' \
+AS='$AS' \
+CC='$CC' \
+CXX='$CXX' \
+DLLTOOL='$DLLTOOL' \
+RANLIB='$RANLIB' \
     $SRC_DIR/mingw-w64/mingw-w64-crt/configure \
     --prefix=$PREFIX \
     --build=$BUILD \

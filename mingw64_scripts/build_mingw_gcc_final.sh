@@ -63,6 +63,10 @@ ${gcc_src}/configure \
     --with-gnu-ld \
     --with-gnu-as \
     --without-newlib \
+    --without-isl \
+    --without-gmp \
+    --without-mpfr \
+    --without-mpc \
     --with-libiconv \
     --with-gmp=$PREFIX \
     --with-mpfr=$PREFIX \
