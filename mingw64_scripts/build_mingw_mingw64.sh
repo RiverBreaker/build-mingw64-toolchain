@@ -14,6 +14,8 @@ export CXX=$OUTPUT_DIR/bin/x86_64-w64-mingw32-g++
 export AR=$OUTPUT_DIR/bin/x86_64-w64-mingw32-ar
 export RANLIB=$OUTPUT_DIR/bin/x86_64-w64-mingw32-ranlib
 export STRIP=$OUTPUT_DIR/bin/x86_64-w64-mingw32-strip
+export AS=$OUTPUT_DIR/bin/x86_64-w64-mingw32-as
+export DLLTOOL=$OUTPUT_DIR/bin/x86_64-w64-mingw32-dlltool
 
 cd $BUILD_TEMP
 for d in build-mingw-binutils build-mingw-m4 build-mingw-libtool; do
@@ -105,12 +107,12 @@ echo "Build headers completed."
 # Build crt
 cd $BUILD_TEMP/build-mingw-crt
 echo "Configure win mingw crt starting..."
-AR='$AR' \
-AS='$AS' \
-CC='$CC' \
-CXX='$CXX' \
-DLLTOOL='$DLLTOOL' \
-RANLIB='$RANLIB' \
+AR="$AR" \
+AS="$AS" \
+CC="$CC" \
+CXX="$CXX" \
+DLLTOOL="$DLLTOOL" \
+RANLIB="$RANLIB" \
     $SRC_DIR/mingw-w64/mingw-w64-crt/configure \
     --prefix=$PREFIX \
     --build=$BUILD \

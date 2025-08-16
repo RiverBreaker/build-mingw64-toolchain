@@ -14,6 +14,11 @@ export CXX=$OUTPUT_DIR/bin/x86_64-w64-mingw32-g++
 export AR=$OUTPUT_DIR/bin/x86_64-w64-mingw32-ar
 export RANLIB=$OUTPUT_DIR/bin/x86_64-w64-mingw32-ranlib
 export STRIP=$OUTPUT_DIR/bin/x86_64-w64-mingw32-strip
+export AS=$OUTPUT_DIR/bin/x86_64-w64-mingw32-as
+export DLLTOOL=$OUTPUT_DIR/bin/x86_64-w64-mingw32-dlltool
+export CPPFLAGS="-I$PREFIX/include${CPPFLAGS:+ ${CPPFLAGS}}"
+export LDFLAGS="-L$PREFIX/lib${LDFLAGS:+ ${LDFLAGS}}"
+export PKG_CONFIG_PATH="$PREFIX/lib/pkgconfig${PKG_CONFIG_PATH:+:$PKG_CONFIG_PATH}"
 
 cd $BUILD_TEMP
 
@@ -63,15 +68,13 @@ ${gcc_src}/configure \
     --with-gnu-ld \
     --with-gnu-as \
     --without-newlib \
-    --without-isl \
-    --without-gmp \
-    --without-mpfr \
-    --without-mpc \
     --with-libiconv \
     --with-gmp=$PREFIX \
     --with-mpfr=$PREFIX \
-    --with-mpc=$PREFIX \
-    --with-isl=$PREFIX
+    --with-mpc=$PREFIX
+# Note: We intentionally disable in-tree ISL by not referencing it, to avoid configure-isl needing gmp.h
+# If Graphite is desired later, ensure system ISL is used and available, then add: --with-isl=$PREFIX
+
 echo "Configure gcc stage 2 done"
 make -j1 && make install
 echo "Build gcc stage 2 done"
@@ -111,8 +114,9 @@ else
     echo "libiconv installation verification failed." >&2
 fi
 
-cp $PREFIX/lib/gcc/$TARGET/*.dll $PREFIX/bin
-cp $PREFIX/lib/gcc/$TARGET/lib/* $PREFIX/lib
+# Safely copy runtime DLLs and libraries if they exist
+cp -f "$PREFIX/lib/gcc/$TARGET/"*.dll "$PREFIX/bin" 2>/dev/null || true
+cp -f "$PREFIX/lib/gcc/$TARGET/lib/"* "$PREFIX/lib" 2>/dev/null || true
 
 echo "Mingw-w64 toolchain build completed successfully!"
 echo "Toolchain installed in: $PREFIX"
