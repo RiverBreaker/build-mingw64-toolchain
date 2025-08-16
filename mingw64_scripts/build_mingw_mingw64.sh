@@ -9,8 +9,8 @@ export HOST=x86_64-w64-mingw32
 export PATH=$PATH:$OUTPUT_DIR/bin
 
 # Set cross-compiler environment variables
-export CC=$OUTPUT_DIR/bin/x86_64-w64-mingw32-gcc
-export CXX=$OUTPUT_DIR/bin/x86_64-w64-mingw32-g++
+export CC_FOR_BUILD=$OUTPUT_DIR/bin/x86_64-w64-mingw32-gcc
+export CXX_FOR_BUILD=$OUTPUT_DIR/bin/x86_64-w64-mingw32-g++
 export AR=$OUTPUT_DIR/bin/x86_64-w64-mingw32-ar
 export RANLIB=$OUTPUT_DIR/bin/x86_64-w64-mingw32-ranlib
 export STRIP=$OUTPUT_DIR/bin/x86_64-w64-mingw32-strip
@@ -103,6 +103,12 @@ $SRC_DIR/mingw-w64/mingw-w64-headers/configure \
 echo "Configure headers completed."
 make -j1 && make install
 echo "Build headers completed."
+
+# Ensure pthread header visibility under target include if present in common include
+if [ -f "$PREFIX/include/pthread.h" ] && [ ! -f "$PREFIX/$TARGET/include/pthread.h" ]; then
+    echo "Copying pthread.h into $PREFIX/$TARGET/include to satisfy GCC build checks..."
+    cp -f "$PREFIX/include/pthread.h" "$PREFIX/$TARGET/include/" || true
+fi
 
 # Build crt
 cd $BUILD_TEMP/build-mingw-crt

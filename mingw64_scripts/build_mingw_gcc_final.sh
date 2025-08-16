@@ -9,16 +9,16 @@ export HOST=x86_64-w64-mingw32
 export PATH=$PATH:$OUTPUT_DIR/bin
 
 # Set cross-compiler environment variables
-export CC=$OUTPUT_DIR/bin/x86_64-w64-mingw32-gcc
-export CXX=$OUTPUT_DIR/bin/x86_64-w64-mingw32-g++
+export CC_FOR_BUILD=$OUTPUT_DIR/bin/x86_64-w64-mingw32-gcc
+export CXX_FOR_BUILD=$OUTPUT_DIR/bin/x86_64-w64-mingw32-g++
 export AR=$OUTPUT_DIR/bin/x86_64-w64-mingw32-ar
 export RANLIB=$OUTPUT_DIR/bin/x86_64-w64-mingw32-ranlib
 export STRIP=$OUTPUT_DIR/bin/x86_64-w64-mingw32-strip
 export AS=$OUTPUT_DIR/bin/x86_64-w64-mingw32-as
 export DLLTOOL=$OUTPUT_DIR/bin/x86_64-w64-mingw32-dlltool
-export CPPFLAGS="-I$PREFIX/include${CPPFLAGS:+ ${CPPFLAGS}}"
-export LDFLAGS="-L$PREFIX/lib${LDFLAGS:+ ${LDFLAGS}}"
-export PKG_CONFIG_PATH="$PREFIX/lib/pkgconfig${PKG_CONFIG_PATH:+:$PKG_CONFIG_PATH}"
+export CPPFLAGS_FOR_TARGET="-I$PREFIX/include"
+export LDFLAGS_FOR_TARGET="-L$PREFIX/lib"
+export PKG_CONFIG_PATH_FOR_TARGET="$PREFIX/lib/pkgconfig"
 
 cd $BUILD_TEMP
 
@@ -43,12 +43,28 @@ echo "mkdir build-mingw-gcc2"
 gcc_src=$(realpath --relative-to="${BUILD_TEMP}/build-mingw-gcc2" "${SRC_DIR}/gcc")
 
 cd $BUILD_TEMP/build-mingw-gcc2
+
+# Verify critical header files before GCC configuration
+echo "Verifying header file structure..."
+if [ ! -f "$PREFIX/$TARGET/include/_mingw.h" ]; then
+    echo "Error: MinGW-w64 headers not found at $PREFIX/$TARGET/include" >&2
+    exit 1
+fi
+
+# Check if pthread.h will cause issues
+if [ -f "$PREFIX/include/pthread.h" ] && [ ! -f "$PREFIX/$TARGET/include/process.h" ]; then
+    echo "Warning: pthread.h found in $PREFIX/include but process.h missing in $PREFIX/$TARGET/include"
+    echo "This may cause build failures. Ensure winpthreads is built after GCC."
+fi
+
 echo "Configure win mingw gcc/g++ starting..."
 ${gcc_src}/configure \
     --prefix=$PREFIX \
     --build=$BUILD \
     --host=$HOST \
     --target=$TARGET \
+    --with-sysroot=$PREFIX/$TARGET \
+    --with-native-system-header-dir=/include \
     --with-local-prefix=$PREFIX/local \
     --disable-nls \
     --disable-lto \
