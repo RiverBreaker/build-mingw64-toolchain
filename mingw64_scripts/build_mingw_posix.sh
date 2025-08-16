@@ -9,11 +9,15 @@ export HOST=x86_64-w64-mingw32
 export PATH=$PATH:$OUTPUT_DIR/bin
 
 # Set cross-compiler environment variables
-export CC_FOR_BUILD=$OUTPUT_DIR/bin/x86_64-w64-mingw32-gcc
-export CXX_FOR_BUILD=$OUTPUT_DIR/bin/x86_64-w64-mingw32-g++
-export AR=$OUTPUT_DIR/bin/x86_64-w64-mingw32-ar
-export RANLIB=$OUTPUT_DIR/bin/x86_64-w64-mingw32-ranlib
-export STRIP=$OUTPUT_DIR/bin/x86_64-w64-mingw32-strip
+export CC_FOR_BUILD=gcc
+export CXX_FOR_BUILD=g++
+export CC=$TARGET-gcc
+export CXX=$TARGET-g++
+export AR=$TARGET-ar
+export RANLIB=$TARGET-ranlib
+export STRIP=$TARGET-strip
+export AS=$TARGET-as
+export DLLTOOL=$TARGET-dlltool
 
 cd $BUILD_TEMP
 for d in \

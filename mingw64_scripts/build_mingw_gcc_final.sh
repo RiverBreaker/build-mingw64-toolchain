@@ -11,11 +11,13 @@ export PATH=$PATH:$OUTPUT_DIR/bin
 # Set cross-compiler environment variables
 export CC_FOR_BUILD=gcc
 export CXX_FOR_BUILD=g++
-export AR=$OUTPUT_DIR/bin/x86_64-w64-mingw32-ar
-export RANLIB=$OUTPUT_DIR/bin/x86_64-w64-mingw32-ranlib
-export STRIP=$OUTPUT_DIR/bin/x86_64-w64-mingw32-strip
-export AS=$OUTPUT_DIR/bin/x86_64-w64-mingw32-as
-export DLLTOOL=$OUTPUT_DIR/bin/x86_64-w64-mingw32-dlltool
+export CC=$TARGET-gcc
+export CXX=$TARGET-g++
+export AR=$TARGET-ar
+export RANLIB=$TARGET-ranlib
+export STRIP=$TARGET-strip
+export AS=$TARGET-as
+export DLLTOOL=$TARGET-dlltool
 export CPPFLAGS_FOR_TARGET="-I$PREFIX/include"
 export LDFLAGS_FOR_TARGET="-L$PREFIX/lib"
 export PKG_CONFIG_PATH_FOR_TARGET="$PREFIX/lib/pkgconfig"
@@ -89,7 +91,10 @@ ${gcc_src}/configure \
     --with-libiconv \
     --with-gmp=$PREFIX \
     --with-mpfr=$PREFIX \
-    --with-mpc=$PREFIX
+    --with-mpc=$PREFIX \
+    --with-gmp-lib=$PREFIX/lib \
+    --with-mpfr-lib=$PREFIX/lib \
+    --with-mpc-lib=$PREFIX/lib
 # Note: We intentionally disable in-tree ISL by not referencing it, to avoid configure-isl needing gmp.h
 # If Graphite is desired later, ensure system ISL is used and available, then add: --with-isl=$PREFIX
 
