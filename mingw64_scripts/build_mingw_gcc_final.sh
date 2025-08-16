@@ -19,6 +19,8 @@ export DLLTOOL=$OUTPUT_DIR/bin/x86_64-w64-mingw32-dlltool
 export CPPFLAGS_FOR_TARGET="-I$PREFIX/include"
 export LDFLAGS_FOR_TARGET="-L$PREFIX/lib"
 export PKG_CONFIG_PATH_FOR_TARGET="$PREFIX/lib/pkgconfig"
+export CPPFLAGS="-I$WORKDIR/build/ubuntu-tools/mingw64/include"
+export LDFLAGS="-L$WORKDIR/build/ubuntu-tools/mingw64/lib"
 
 cd $BUILD_TEMP
 
