@@ -6,7 +6,7 @@ export OUTPUT_DIR="$WORKDIR/build/ubuntu-tools/mingw64"
 export TARGET=x86_64-w64-mingw32
 export BUILD=x86_64-pc-linux-gnu
 export HOST=x86_64-w64-mingw32
-export PATH=$PATH:$OUTPUT_DIR/bin
+export PATH=$OUTPUT_DIR/bin:$PATH
 
 # Set cross-compiler environment variables
 export CC_FOR_BUILD=gcc
@@ -18,11 +18,12 @@ export RANLIB=$TARGET-ranlib
 export STRIP=$TARGET-strip
 export AS=$TARGET-as
 export DLLTOOL=$TARGET-dlltool
-export CPPFLAGS_FOR_TARGET="-I$PREFIX/include"
-export LDFLAGS_FOR_TARGET="-L$PREFIX/lib"
-export PKG_CONFIG_PATH_FOR_TARGET="$PREFIX/lib/pkgconfig"
-export CPPFLAGS="-I$WORKDIR/build/ubuntu-tools/mingw64/include"
-export LDFLAGS="-L$WORKDIR/build/ubuntu-tools/mingw64/lib"
+export SYSROOT="$PREFIX/$TARGET"
+export CPPFLAGS="-I${PREFIX}/include -I${SYSROOT}/include"
+export CFLAGS="$CPPFLAGS"
+export CXXFLAGS="$CPPFLAGS"
+export LDFLAGS="-L${PREFIX}/lib -L${SYSROOT}/lib"
+export PKG_CONFIG_PATH="${PREFIX}/lib/pkgconfig:${SYSROOT}/lib/pkgconfig"
 
 cd $BUILD_TEMP
 
@@ -45,6 +46,7 @@ mkdir -p build-mingw-gcc2
 echo "mkdir build-mingw-gcc2"
 
 gcc_src=$(realpath --relative-to="${BUILD_TEMP}/build-mingw-gcc2" "${SRC_DIR}/gcc")
+src=$(realpath --relative-to="${BUILD_TEMP}/build-mingw-gmp" "${SRC_DIR}")
 
 cd $BUILD_TEMP/build-mingw-gcc2
 
@@ -92,9 +94,8 @@ ${gcc_src}/configure \
     --with-gmp=$PREFIX \
     --with-mpfr=$PREFIX \
     --with-mpc=$PREFIX \
-    --with-gmp-lib=$PREFIX/lib \
-    --with-mpfr-lib=$PREFIX/lib \
-    --with-mpc-lib=$PREFIX/lib
+    --with-isl=$PREFIX
+
 # Note: We intentionally disable in-tree ISL by not referencing it, to avoid configure-isl needing gmp.h
 # If Graphite is desired later, ensure system ISL is used and available, then add: --with-isl=$PREFIX
 
