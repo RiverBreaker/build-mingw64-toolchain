@@ -159,8 +159,5 @@ cp -f "$PREFIX/lib/gcc/$TARGET/lib/"* "$PREFIX/lib" 2>/dev/null || true
 echo "Mingw-w64 toolchain build completed successfully!"
 echo "Toolchain installed in: $PREFIX"
 
-echo "gcc/g++ version:"
-echo "gcc version:"
-$PREFIX/bin/x86_64-w64-mingw32-gcc --version
-echo "g++ version:"
-$PREFIX/bin/x86_64-w64-mingw32-g++ --version
+echo "gcc/g++ localtion:"
+ls $PREFIX/bin
