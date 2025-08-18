@@ -40,6 +40,7 @@ echo "Configure Binutils completed."
 # mkdir -p $BUILD_TEMP/build-gnu-binutils/gas/doc
 make -j1 && make install
 echo "Build Binutils completed."
+ls $PREFIX/bin
 
 # Post-installation verification
 if [ -x "$PREFIX/bin/$TARGET-ld" ]; then

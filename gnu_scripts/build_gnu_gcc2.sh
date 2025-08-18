@@ -58,7 +58,7 @@ ${gcc_src}/configure \
 echo "Configure gcc stage 2 done"
 make -j1 && make install
 echo "Build gcc stage 2 done"
-
+ls $PREFIX/bin/$TARGET-*
 # Post-installation verification for GCC stage 2
 if [ -x "$PREFIX/bin/$TARGET-gcc" ] && [ -x "$PREFIX/bin/$TARGET-g++" ]; then
     echo "GCC stage 2 installation verified successfully."

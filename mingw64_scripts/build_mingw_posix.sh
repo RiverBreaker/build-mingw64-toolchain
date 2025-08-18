@@ -38,7 +38,7 @@ mingw64_src=$(realpath --relative-to="${BUILD_TEMP}/build-mingw-winpthreads" "${
 cd $BUILD_TEMP/build-mingw-winpthreads
 echo "Configure win mingw winpthteads starting..."
 ${mingw64_src}/mingw-w64-libraries/winpthreads/configure \
-    --prefix=$PREFIX \
+    --prefix=$PREFIX/$TARGET \
     --build=$BUILD \
     --host=$HOST \
     --enable-shared \
@@ -51,7 +51,7 @@ echo "Build winpthreads completed."
 cd $BUILD_TEMP/build-mingw-winstorecompat
 echo "Configure win mingw winstorecompat starting..."
 ${mingw64_src}/mingw-w64-libraries/winstorecompat/configure \
-    --prefix=$PREFIX \
+    --prefix=$PREFIX/$TARGET \
     --build=$BUILD \
     --host=$HOST
 echo "Configure winstorecompat completed."

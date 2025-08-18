@@ -25,14 +25,23 @@ echo "mkdir build-gnu-winpthreads build-gnu-winstorecompat"
 mingw64_src=$(realpath --relative-to="${BUILD_TEMP}/build-gnu-winpthreads" "${SRC_DIR}/mingw-w64")
 
 cd $BUILD_TEMP/build-gnu-winpthreads
+if [ ! -f "$PREFIX/$TARGET/include/windef.h" ]; then
+    echo "ERROR: Headers not installed! Run headers build script first." >&2
+    echo "Expected: $PREFIX/$TARGET/include/windef.h" >&2
+    exit 1
+fi
 echo "Configure win mingw winpthteads starting..."
 ${mingw64_src}/mingw-w64-libraries/winpthreads/configure \
-    --prefix=$PREFIX \
+    --prefix=$PREFIX/$TARGET \
     --build=$BUILD \
-    --host=$HOST \
+    --host=$TARGET \
     --enable-shared \
     --enable-static \
-    --with-gnu-ld
+    --with-gnu-ld \
+    CC="${TARGET}-gcc" \
+    AR="${TARGET}-ar" \
+    RANLIB="${TARGET}-ranlib" \
+    STRIP="${TARGET}-strip"
 echo "Configure winpthreads completed."
 make -j1 && make install
 echo "Build winpthreads completed."
@@ -40,9 +49,12 @@ echo "Build winpthreads completed."
 cd $BUILD_TEMP/build-gnu-winstorecompat
 echo "Configure win mingw winstorecompat starting..."
 ${mingw64_src}/mingw-w64-libraries/winstorecompat/configure \
-    --prefix=$PREFIX \
+    --prefix=$PREFIX/$TARGET \
     --build=$BUILD \
-    --host=$HOST
+    --host=$TARGET \
+    CC="${TARGET}-gcc" \
+    AR="${TARGET}-ar" \
+    RANLIB="${TARGET}-ranlib"
 echo "Configure winstorecompat completed."
 make -j1 && make install
 echo "Build winstorecompat completed."
