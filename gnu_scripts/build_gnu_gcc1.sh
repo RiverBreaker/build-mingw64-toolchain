@@ -44,7 +44,7 @@ ${gcc_src}/configure \
     --enable-languages=c,c++ \
     --enable-version-specific-runtime-libs \
     --enable-decimal-float=yes \
-    --enable-threads=win32 \
+    --enable-threads=posix \
     --enable-tls \
     --enable-fully-dynamic-string \
     --with-gnu-ld \
