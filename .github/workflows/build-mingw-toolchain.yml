@@ -21,7 +21,7 @@ jobs:
       - name: Install dependencies
         run: |
           chmod +x scripts/download_dep.sh
-          ./scripts/download_dep.sh
+          source ./scripts/download_dep.sh
       
       - name: Mkdir build directory
         run: |
@@ -38,58 +38,64 @@ jobs:
       - name: Build gnu dependencies tools
         run: |
           chmod +x gnu_scripts/build_gnu_dep_tools.sh
-          ./gnu_scripts/build_gnu_dep_tools.sh
+          source ./gnu_scripts/build_gnu_dep_tools.sh
       
       - name: Build gnu binutils
         run: |
           chmod +x gnu_scripts/build_gnu_binutils.sh
-          ./gnu_scripts/build_gnu_binutils.sh
+          source ./gnu_scripts/build_gnu_binutils.sh
 
       - name: Build gnu Mingw64 dependencies
         run: |
           chmod +x gnu_scripts/build_gnu_mingw64.sh
-          ./gnu_scripts/build_gnu_mingw64.sh
+          source ./gnu_scripts/build_gnu_mingw64.sh
 
       - name: Build gnu gcc stage1
         run: |
           chmod +x gnu_scripts/build_gnu_gcc1.sh
-          ./gnu_scripts/build_gnu_gcc1.sh
+          source ./gnu_scripts/build_gnu_gcc1.sh
 
       - name: Build gnu crt
         run: |
           chmod +x gnu_scripts/build_gnu_crt.sh
-          ./gnu_scripts/build_gnu_crt.sh
+          source ./gnu_scripts/build_gnu_crt.sh
+      
+      - name: Build gnu mingw-posix
+        if: ${{ matrix.thread == 'posix' }}
+        run: |
+          chmod +x gnu_scripts/build_gnu_mingw_posix.sh
+          source ./gnu_scripts/build_gnu_mingw_posix.sh
 
       - name: Build gnu gcc stage2
         run: |
           chmod +x gnu_scripts/build_gnu_gcc2.sh
-          ./gnu_scripts/build_gnu_gcc2.sh
+          source ./gnu_scripts/build_gnu_gcc2.sh
       
       - name: Build mingw dependencies tools
         run: |
           chmod +x mingw64_scripts/build_mingw_dep_tools.sh
-          ./mingw64_scripts/build_mingw_dep_tools.sh
+          source ./mingw64_scripts/build_mingw_dep_tools.sh
       
       - name: Build mingw binutils
         run: |
           chmod +x mingw64_scripts/build_mingw_binutils.sh
-          ./mingw64_scripts/build_mingw_binutils.sh
+          source ./mingw64_scripts/build_mingw_binutils.sh
 
       - name: Build mingw Mingw64 dependencies
         run: |
           chmod +x mingw64_scripts/build_mingw_mingw64.sh
-          ./mingw64_scripts/build_mingw_mingw64.sh
+          source ./mingw64_scripts/build_mingw_mingw64.sh
       
       - name: Build mingw posix
         if: ${{ matrix.thread == 'posix' }}
         run: |
           chmod +x mingw64_scripts/build_mingw_posix.sh
-          ./mingw64_scripts/build_mingw_posix.sh
+          source ./mingw64_scripts/build_mingw_posix.sh
 
       - name: Build mingw gcc
         run: |
           chmod +x mingw64_scripts/build_mingw_gcc_final.sh
-          ./mingw64_scripts/build_mingw_gcc_final.sh
+          source ./mingw64_scripts/build_mingw_gcc_final.sh
       
       - name: rm build-gcc directory
         run: |

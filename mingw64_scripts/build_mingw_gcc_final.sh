@@ -19,11 +19,10 @@ export STRIP=$TARGET-strip
 export AS=$TARGET-as
 export DLLTOOL=$TARGET-dlltool
 export SYSROOT="$PREFIX/$TARGET"
-export CPPFLAGS="-I${PREFIX}/include -I${SYSROOT}/include"
-export CFLAGS="$CPPFLAGS"
-export CXXFLAGS="$CPPFLAGS"
-export LDFLAGS="-L${PREFIX}/lib -L${SYSROOT}/lib"
-export PKG_CONFIG_PATH="${PREFIX}/lib/pkgconfig:${SYSROOT}/lib/pkgconfig"
+export CPPFLAGS_FOR_TARGET="-I${PREFIX}/include -I${SYSROOT}/include"
+export CFLAGS_FOR_TARGET="$CPPFLAGS_FOR_TARGET"
+export CXXFLAGS_FOR_TARGET="$CPPFLAGS_FOR_TARGET"
+export LDFLAGS_FOR_TARGET="-L${PREFIX}/lib -L${SYSROOT}/lib"
 
 cd $BUILD_TEMP
 
@@ -69,7 +68,7 @@ ${gcc_src}/configure \
     --build=$BUILD \
     --host=$HOST \
     --target=$TARGET \
-    --with-sysroot=$PREFIX/$TARGET \
+    --with-sysroot=$SYSROOT \
     --with-native-system-header-dir=/include \
     --with-local-prefix=$PREFIX/local \
     --disable-nls \
@@ -91,16 +90,31 @@ ${gcc_src}/configure \
     --with-gnu-as \
     --without-newlib \
     --with-libiconv \
-    --with-gmp=$PREFIX \
-    --with-mpfr=$PREFIX \
-    --with-mpc=$PREFIX \
-    --with-isl=$PREFIX
+    CPPFLAGS_FOR_TARGET="-I$PREFIX/$TARGET/include -I$PREFIX/include" \
+    LDFLAGS_FOR_TARGET="-L$PREFIX/$TARGET/lib -L$PREFIX/lib"
 
 # Note: We intentionally disable in-tree ISL by not referencing it, to avoid configure-isl needing gmp.h
 # If Graphite is desired later, ensure system ISL is used and available, then add: --with-isl=$PREFIX
 
 echo "Configure gcc stage 2 done"
-make -j1 && make install
+make -j1 V=1 all-gcc || { echo "all-gcc failed"; exit 1; }
+make install-gcc || { echo "install-gcc failed"; exit 1; }
+
+# 构建 target 的 libgcc 时把 *_FOR_TARGET 传给 make
+make -j1 V=1 all-target-libgcc CPPFLAGS_FOR_TARGET="$CPPFLAGS_FOR_TARGET" \
+                               CFLAGS_FOR_TARGET="$CFLAGS_FOR_TARGET" \
+                               LDFLAGS_FOR_TARGET="$LDFLAGS_FOR_TARGET" || { echo "all-target-libgcc failed"; exit 1; }
+make install-target-libgcc CPPFLAGS_FOR_TARGET="$CPPFLAGS_FOR_TARGET" \
+                           CFLAGS_FOR_TARGET="$CFLAGS_FOR_TARGET" \
+                           LDFLAGS_FOR_TARGET="$LDFLAGS_FOR_TARGET" || { echo "install-target-libgcc failed"; exit 1; }
+
+# 若需构建 libstdc++:
+make -j1 V=1 all-target-libstdc++-v3 CPPFLAGS_FOR_TARGET="$CPPFLAGS_FOR_TARGET" \
+                                    CFLAGS_FOR_TARGET="$CFLAGS_FOR_TARGET" \
+                                    LDFLAGS_FOR_TARGET="$LDFLAGS_FOR_TARGET" || { echo "all-target-libg++-v3 failed"; exit 1; }
+make install-target-libstdc++-v3 CPPFLAGS_FOR_TARGET="$CPPFLAGS_FOR_TARGET" \
+                                    CFLAGS_FOR_TARGET="$CFLAGS_FOR_TARGET" \
+                                    LDFLAGS_FOR_TARGET="$LDFLAGS_FOR_TARGET" || { echo "install-target-libg++-v3 failed"; exit 1; }
 echo "Build gcc stage 2 done"
 if [ -x "$PREFIX/bin/$TARGET-gcc" ] && [ -x "$PREFIX/bin/$TARGET-g++" ]; then
     echo "GCC final installation verified successfully."
