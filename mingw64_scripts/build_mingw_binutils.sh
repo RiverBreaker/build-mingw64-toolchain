@@ -49,7 +49,9 @@ ${binutils_src}/configure \
     --with-mpc=$PREFIX \
     --with-gmp=$PREFIX \
     --with-mpfr=$PREFIX \
-    --with-isl=$PREFIX
+    --with-isl=$PREFIX \
+    --enable-threads=posix \
+    --enable-gdb-with-libpth-win32 \
 echo "Configure Binutils completed."
 # mkdir -p $BUILD_TEMP/build-mingw-binutils/gas/doc
 make -j1 && make install

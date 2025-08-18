@@ -24,7 +24,7 @@ echo "mkdir build-gnu-winpthreads build-gnu-winstorecompat"
 
 mingw64_src=$(realpath --relative-to="${BUILD_TEMP}/build-gnu-winpthreads" "${SRC_DIR}/mingw-w64")
 
-cd $BUILD_TEMP/build-mingw-winpthreads
+cd $BUILD_TEMP/build-gnu-winpthreads
 echo "Configure win mingw winpthteads starting..."
 ${mingw64_src}/mingw-w64-libraries/winpthreads/configure \
     --prefix=$PREFIX \
@@ -37,7 +37,7 @@ echo "Configure winpthreads completed."
 make -j1 && make install
 echo "Build winpthreads completed."
 
-cd $BUILD_TEMP/build-mingw-winstorecompat
+cd $BUILD_TEMP/build-gnu-winstorecompat
 echo "Configure win mingw winstorecompat starting..."
 ${mingw64_src}/mingw-w64-libraries/winstorecompat/configure \
     --prefix=$PREFIX \
