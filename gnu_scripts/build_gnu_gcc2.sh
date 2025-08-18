@@ -71,7 +71,7 @@ if [ -d build-gnu-gcc2 ]; then
     rm -rf build-gnu-gcc2
     echo "remove build-gnu-gcc2"
 fi
-
+cd $BUILD_TEMP
 if [ -d build-gnu-libiconv ]; then
     rm -rf build-gnu-libiconv
     echo "remove build-gnu-libiconv"
