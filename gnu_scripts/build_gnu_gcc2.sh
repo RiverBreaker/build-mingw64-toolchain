@@ -25,7 +25,7 @@ echo "Configure gnu mingw gcc stage 2 starting..."
 ${gcc_src}/configure \
     --prefix=$PREFIX \
     --build=$BUILD \
-    --host=$BUILD \
+    --host=$HOST \
     --target=$TARGET \
     --with-local-prefix=$PREFIX/local \
     --program-prefix=$TARGET- \
