@@ -5,7 +5,7 @@ export SRC_DIR="$WORKDIR/build/src"
 export TARGET=x86_64-w64-mingw32
 export BUILD=x86_64-pc-linux-gnu
 export HOST=x86_64-pc-linux-gnu
-export PATH=$PATH:$PREFIX/bin
+export PATH=$PREFIX/bin:$PATH
 
 
 cd $BUILD_TEMP
