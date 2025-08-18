@@ -49,6 +49,12 @@ jobs:
         run: |
           chmod +x gnu_scripts/build_gnu_mingw64.sh
           source ./gnu_scripts/build_gnu_mingw64.sh
+      
+      - name: Build gnu mingw-posix
+        if: ${{ matrix.thread == 'posix' }}
+        run: |
+          chmod +x gnu_scripts/build_gnu_posix.sh
+          source ./gnu_scripts/build_gnu_posix.sh
 
       - name: Build gnu gcc stage1
         run: |
@@ -59,12 +65,6 @@ jobs:
         run: |
           chmod +x gnu_scripts/build_gnu_crt.sh
           source ./gnu_scripts/build_gnu_crt.sh
-      
-      - name: Build gnu mingw-posix
-        if: ${{ matrix.thread == 'posix' }}
-        run: |
-          chmod +x gnu_scripts/build_gnu_posix.sh
-          source ./gnu_scripts/build_gnu_posix.sh
 
       - name: Build gnu gcc stage2
         run: |
